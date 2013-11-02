@@ -15,22 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//To do - fix the boardWidth,boardHeight hack - the boardController should manage positions past the edge
-function PlayerController(sprite,boardController,boardWidth,boardHeight)
+function PlayerController(sprite,boardController)
 {
-//======================================================================
-//To do - fix the boardWidth,boardHeight hack - the boardController should manage positions past the edge
-this.boardWidth=boardWidth;
-this.boardHeight=boardHeight;
-//======================================================================
 	var that = this;
 	this.sprite = sprite;
 	this.boardController = boardController;
 	this.speed = 10;
 	this.nextDirection = 0;
 	this.direction = 0;
-	this.dx = this.speed;
-	this.dy = 0;
 	this.x=200;
 	this.y=200;
 	$( document ).keydown(function(event){
@@ -61,41 +53,16 @@ PlayerController.prototype.move = function(context)
 		{
 			this.direction = this.nextDirection;
 			this.sprite.setDirection(this.direction);
-			switch(this.direction)
-			{
-				case 0:
-					this.dx = this.speed;
-					this.dy = 0;
-					break;
-				case 1:
-					this.dx = 0;
-					this.dy = this.speed;
-					break;
-				case 2:
-					this.dx = -this.speed;
-					this.dy = 0;
-					break;
-				case 3:
-					this.dx = 0;
-					this.dy = -this.speed;
-					break;
-			}
 		}
 	}
 	this.sprite.clear(context);
 	this.sprite.advanceFrame();
-	var nextX = this.x+this.dx;
-	var nextY = this.y+this.dy;
-//To do - fix this hack - the boardController should manage positions past the edge
-if(nextX<0) nextX+=this.boardWidth;
-if(nextX>=this.boardWidth) nextX-=this.boardWidth;
-if(nextY<0) nextY+=this.boardHeight;
-if(nextY>=this.boardHeight) nextY-=this.boardHeight;
-	if(this.boardController.canMove(this.x,this.y,nextX,nextY))
+	var nextPosition=this.boardController.move(this.x,this.y,this.direction,this.speed);
+	if(nextPosition)
 	{
-		this.x = nextX;
-		this.y = nextY;
+		this.x=nextPosition.x;
+		this.y=nextPosition.y;
+		this.sprite.setPosition(this.x,this.y);
 	}
-	this.sprite.setPosition(this.x,this.y);
 	this.sprite.draw(context);
 };

@@ -58,26 +58,42 @@ BoardController.prototype.canTurn = function(x,y,direction)
 	return result;
 }
 
-//Assume that all coordinates passed to this function are within the board's bounds
-BoardController.prototype.canMove = function(fromX,fromY,toX,toY)
+BoardController.prototype.move = function(fromX,fromY,direction,distance)
 {
-	var result = false;
-	var xIndex;
-	var yIndex;
-	var fromYSquare;
+	result=false;
+	//convert direction and distance to delta x
+	//dx will be -distance, 0, or +distance, depending on direction
+	//(direction+1)%2 determines whether movement is on the x-axis (1) or y-axis (0)
+	//1-direction determines whether movement is positive or negative on the x-axis
+	var dx = ((direction+1)%2)*(1-direction)*distance;
+	//convert direction and distance to delta y
+	//dy will be -distance, 0, or +distance, depending on direction
+	//(direction%2) determines whether movement is on the x-axis (0) or y-axis (1)
+	//2-direction determines whether movement is positive or negative on the y-axis
+	var dy = (direction%2)*(2-direction)*distance;
 	var fromXSquare;
+	var fromYSquare;
 	var toXSquare;
 	var toYSquare;
-	var walls=false;
-	var direction;
-	if(fromX==toX) //vertical movement
+	var xIndex;
+	var yIndex;
+	var toY;
+	var toX;
+	if(dx==0) //vertical movement
 	{
-		direction=(toY>fromY && toY-fromY<=this.tunnelSize || fromY-toY>this.tunnelSize)?1:-1;
+		toX=fromX;
+		toY = fromY+dy;
+		if(toY<0)
+		{
+			toY+=this.height;
+		}
+		else if(toY>=this.height) toY-=this.height;
+
 		xIndex=Math.floor(fromX/this.tunnelSize);
 		fromXSquare=xIndex;
 		toXSquare=xIndex;
 		walls=this.hWalls;
-		if(direction>0)
+		if(dy>0)
 		{
 			fromYSquare=Math.floor(fromY/this.tunnelSize);
 			toYSquare=(fromYSquare+1)%this.tunnelsDown;
@@ -90,14 +106,20 @@ BoardController.prototype.canMove = function(fromX,fromY,toX,toY)
 			yIndex=fromYSquare;
 		}
 	}
-	else if(fromY==toY) //horizontal movement
+	else if(dy==0)
 	{
-		direction=(toX>fromX && toX-fromX<=this.tunnelSize || fromX-toX>this.tunnelSize)?1:-1;
+		toY=fromY;
+		toX = fromX+dx;
+		if(toX<0)
+		{
+			toX+=this.width;
+		}
+		else if(toX>=this.width) toX-=this.width;
 		yIndex=Math.floor(fromY/this.tunnelSize);
 		fromYSquare=yIndex;
 		toYSquare=yIndex;
 		walls=this.vWalls;
-		if(direction>0)
+		if(dx>0)
 		{
 			fromXSquare=Math.floor(fromX/this.tunnelSize);
 			toXSquare=(fromXSquare+1)%this.tunnelsAcross;
@@ -110,11 +132,14 @@ BoardController.prototype.canMove = function(fromX,fromY,toX,toY)
 			xIndex=fromXSquare;
 		}
 	}
-	if(walls && !walls[yIndex][xIndex])
+	if(walls && !walls[yIndex][xIndex]) //no wall in the way
 	{
-		//no wall in the way
+		
 		//not going to a ghost spawn area, or coming from a ghost spawn area (only freshly spawned ghosts allowed)
-		result = !this.ghostSpawn[toYSquare][toXSquare] || this.ghostSpawn[fromYSquare][fromXSquare];
+		if(!this.ghostSpawn[toYSquare][toXSquare] || this.ghostSpawn[fromYSquare][fromXSquare])
+		{
+			result = {x:toX,y:toY};
+		}
 	}
 	return result;
 }

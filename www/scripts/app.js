@@ -45,7 +45,7 @@ $(function(){
 		'|     |     |     |     ',
 		'+ +-+-+-+-+ + +-+-+-+-+ +',
 		'|                       '];
-	var playerInfo ={
+	var playerInfo = {
 		width:32,
 		height:32,
 		xOffset:4,
@@ -60,9 +60,8 @@ $(function(){
 	imageLoader.onComplete(imagesLoaded);
 	var bufferCanvas =new BufferCanvas(imageLoader.getImage(boardInfo.backgroundImage),boardInfo.width,boardInfo.height);
 	var playerSprite = new Sprite(imageLoader.getImage(playerInfo.spriteImage),bufferCanvas,playerInfo);
-//To do - fix the 400,400 hack - the boardController should manage positions past the edge
 	var boardController = new BoardController(boardInfo);
-	var playerController = new PlayerController(playerSprite,boardController,480,440);
+	var playerController = new PlayerController(playerSprite,boardController);
 	var boardView = new BoardView(bufferCanvas,boardInfo);
 	var boardModel = new BoardModel();
 	boardModel.loadMap(map);
