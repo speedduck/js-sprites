@@ -43,7 +43,7 @@ BoardController.prototype.canTurn = function(x,y,direction)
 		{
 			//1-2*Math.floor(direction/2) converts direction into +1 or -1
 			//Character can turn here if she can move at least one pixel in the desired direction
-			result=this.canMove(x,y,(x+(1-2*Math.floor(direction/2))+this.width)%this.width,y);
+			result=this.move(x,y,direction,1)!==false;
 		}
 	}
 	else //vertical
@@ -52,7 +52,7 @@ BoardController.prototype.canTurn = function(x,y,direction)
 		{
 			//1-2*Math.floor(direction/2) converts direction into +1 or -1
 			//Character can turn here if he can move at least one pixel in the desired direction
-			result=this.canMove(x,y,x,(y+(1-2*Math.floor(direction/2))+this.height)%this.height);
+			result=this.move(x,y,direction,1)!==false;
 		}
 	}
 	return result;
