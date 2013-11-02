@@ -17,15 +17,17 @@
 
 function BoardModel ()
 {
-	this.hWalls = [];
-	this.vWalls = [];
-	this.ghostSpawn = [];
+	this.hWalls = null;
+	this.vWalls = null;
+	this.ghostSpawn = null;
+	this.solidSpaces = null;
 }
 BoardModel.prototype.loadMap = function(map)
 {
 	this.hWalls = [];
 	this.vWalls = [];
 	this.ghostSpawn = [];
+	this.solidSpaces = [];
 	var hIndex=0;
 	var vIndex=0;
 	for(var i=0;i<map.length;i++)
@@ -53,14 +55,17 @@ BoardModel.prototype.loadMap = function(map)
 				k++;
 			}
 			this.vWalls[vIndex]=row;
-			row=[];
+			gsRow=[];
+			ssRow=[];
 			k=0;
 			for(var j=1; j<chars.length; j+=2)
 			{
-				row[k]=(chars[j]=='g');
+				gsRow[k]=(chars[j]=='g');
+				ssRow[k]=(chars[j]=='s');
 				k++;
 			}
-			this.ghostSpawn[vIndex]=row;
+			this.ghostSpawn[vIndex]=gsRow;
+			this.solidSpaces[vIndex]=ssRow;
 			vIndex++;
 		}
 	}
@@ -79,4 +84,9 @@ BoardModel.prototype.getHorizontalWalls = function()
 BoardModel.prototype.getGhostSpawn = function()
 {
 	return this.ghostSpawn;
+};
+
+BoardModel.prototype.getSolidSpaces = function()
+{
+	return this.solidSpaces;
 };

@@ -24,14 +24,15 @@ function BoardView (bufferCanvas,properties)
 	this.ghostSpawnColor='#00c030';
 	this.wallColor='#008020';
 	this.wallHighlight='#20ff40';
+	this.solidColor='#008020';
 	
 
-	this.drawGhostSpawn = function(context, ghostSpawn, color)
+	this.drawSolid = function(context, data, color)
 	{
 		context.fillStyle=color;
-		for(var j=0; j<ghostSpawn.length; j++)
+		for(var j=0; j<data.length; j++)
 		{
-			var row=ghostSpawn[j];
+			var row=data[j];
 			for(var i=0; i<row.length; i++)
 			{
 				if(row[i])
@@ -80,8 +81,10 @@ BoardView.prototype.draw = function(model)
 	var vWalls = model.getVerticalWalls();
 	var hWalls = model.getHorizontalWalls();
 	var ghostSpawn = model.getGhostSpawn();
+	var solidSpaces = model.getSolidSpaces();
 	var context = this.bufferCanvas.getContext();
-	this.drawGhostSpawn(context,ghostSpawn,this.ghostSpawnColor);
+	this.drawSolid(context,ghostSpawn,this.ghostSpawnColor);
+	this.drawSolid(context,solidSpaces,this.solidColor);
 	this.drawWallsHelper(context,hWalls,true,this.wallColor,4);
 	this.drawWallsHelper(context,vWalls,false,this.wallColor,4);
 	this.drawWallsHelper(context,hWalls,true,this.wallHighlight,1.5,-1.25,-1.25);

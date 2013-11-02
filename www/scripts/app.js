@@ -26,17 +26,17 @@ $(function(){
 		'+-+-+-+-+-+-+-+-+-+-+-+-+',
 		'|           |           ',
 		'+ +-+ +-+-+ + +-+-+ +-+ +',
-		'| | | |   | | |   | | | ',
+		'| |s| |s s| | |s s| |s| ',
 		'+ +-+ +-+-+ + +-+-+ +-+ +',
 		'|                       ',
 		'+ +-+ + +-+-+-+-+ + +-+ +',
 		'|     |     |     |     ',
 		'+-+-+ +-+-+ + +-+-+ +-+-+',
-		'|   | |           | |   ',
+		'|s s| |           | |s s',
 		'+-+-+ + +-+ + +-+ + +-+-+',
 		'        |g g g g|       ',
 		'+-+-+ + +-+-+-+-+ + +-+-+',
-		'|   | |           | |   ',
+		'|s s| |           | |s s',
 		'+-+-+ + +-+-+-+-+ + +-+-+',
 		'|           |           ',
 		'+ +-+ +-+-+ + +-+-+ +-+ +',
@@ -61,11 +61,13 @@ $(function(){
 	var bufferCanvas =new BufferCanvas(imageLoader.getImage(boardInfo.backgroundImage),boardInfo.width,boardInfo.height);
 	var playerSprite = new Sprite(imageLoader.getImage(playerInfo.spriteImage),bufferCanvas,playerInfo);
 //To do - fix the 400,400 hack - the boardController should manage positions past the edge
-	var playerController = new PlayerController(playerSprite,null,480,440);
-	imageLoader.load();
+	var boardController = new BoardController(boardInfo);
+	var playerController = new PlayerController(playerSprite,boardController,480,440);
 	var boardView = new BoardView(bufferCanvas,boardInfo);
 	var boardModel = new BoardModel();
 	boardModel.loadMap(map);
+	boardController.loadLevel(boardModel);
+	imageLoader.load();
 	function imagesLoaded()
 	{
 		bufferCanvas.refresh(0,0,boardInfo.width,boardInfo.height);

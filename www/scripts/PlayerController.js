@@ -31,8 +31,8 @@ this.boardHeight=boardHeight;
 	this.direction = 0;
 	this.dx = this.speed;
 	this.dy = 0;
-	this.x=0;
-	this.y=0;
+	this.x=200;
+	this.y=200;
 	$( document ).keydown(function(event){
 		switch(event.which)
 		{
@@ -57,8 +57,7 @@ PlayerController.prototype.move = function(context)
 	//Find out if there is a queued direction change
 	if(this.nextDirection!==this.direction)
 	{
-//To do: check with the boardController whether it is ok to turn now.
-		if(true)
+		if(this.boardController.canTurn(this.x,this.y,this.nextDirection))
 		{
 			this.direction = this.nextDirection;
 			this.sprite.setDirection(this.direction);
@@ -85,13 +84,18 @@ PlayerController.prototype.move = function(context)
 	}
 	this.sprite.clear(context);
 	this.sprite.advanceFrame();
-	this.x+=this.dx; //Something like this.x=this.boardController.xMove(this.x,this.dx)
-	this.y += this.dy;
+	var nextX = this.x+this.dx;
+	var nextY = this.y+this.dy;
 //To do - fix this hack - the boardController should manage positions past the edge
-if(this.x<0) this.x+=this.boardWidth;
-if(this.x>=this.boardWidth) this.x-=this.boardWidth;
-if(this.y<0) this.y+=this.boardHeight;
-if(this.y>=this.boardHeight) this.y-=this.boardHeight;
+if(nextX<0) nextX+=this.boardWidth;
+if(nextX>=this.boardWidth) nextX-=this.boardWidth;
+if(nextY<0) nextY+=this.boardHeight;
+if(nextY>=this.boardHeight) nextY-=this.boardHeight;
+	if(this.boardController.canMove(this.x,this.y,nextX,nextY))
+	{
+		this.x = nextX;
+		this.y = nextY;
+	}
 	this.sprite.setPosition(this.x,this.y);
 	this.sprite.draw(context);
 };
