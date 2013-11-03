@@ -41,7 +41,7 @@ function Sprite(img,bufferCanvas,properties)
 		{
 			context.drawImage(that.img,that.frame*that.width,ySrc,that.width,that.height,x,that.y+that.yOffset-that.boardHeight,that.width,that.height);
 		}
-	}
+	};
 	this.clearHelper = function(context,x)
 	{
 		that.bufferCanvas.clearRect(context,x,that.y+that.yOffset,that.width,that.height);
@@ -49,7 +49,7 @@ function Sprite(img,bufferCanvas,properties)
 		{
 			that.bufferCanvas.clearRect(context,x,that.y+that.yOffset-that.boardHeight,that.width,that.height);
 		}
-	}
+	};
 }
 Sprite.prototype.advanceFrame = function ()
 {

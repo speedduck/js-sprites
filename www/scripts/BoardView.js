@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 function BoardView (bufferCanvas,properties)
 {
 	this.bufferCanvas = bufferCanvas;
@@ -25,7 +24,6 @@ function BoardView (bufferCanvas,properties)
 	this.wallColor='#008020';
 	this.wallHighlight='#20ff40';
 	this.solidColor='#008020';
-	
 
 	this.drawSolid = function(context, data, color)
 	{
@@ -41,9 +39,11 @@ function BoardView (bufferCanvas,properties)
 				}
 			}
 		}
-	}
-	this.drawWallsHelper = function(context, walls, horizontal, color, width, xOffset=0, yOffset=0)
+	};
+	this.drawWallsHelper = function(context, walls, horizontal, color, width, xOffset, yOffset)
 	{
+		xOffset=xOffset || 0;
+		yOffset=yOffset || 0;
 		context.lineCap = 'round';
 		context.lineWidth=width;
 		context.strokeStyle=color;
@@ -72,7 +72,6 @@ function BoardView (bufferCanvas,properties)
 				}
 			}
 		}
-		
 	};
 }
 

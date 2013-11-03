@@ -30,12 +30,12 @@ function BufferCanvas(bg,w,h)
 BufferCanvas.prototype.getCanvas = function()
 {
 	return this.canvas;
-}
+};
 
 BufferCanvas.prototype.getContext = function()
 {
 	return this.context;
-}
+};
 
 /**
  * Draws the background image onto an area of the buffer context
@@ -56,7 +56,7 @@ BufferCanvas.prototype.refresh = function(x,y,w,h)
 	{
 		this.context.drawImage(this.bgImage,x,y,w,h,x,y,w,h);
 	}
-}
+};
 /**
  * Draws the buffer context on to an area of another context
  */
@@ -72,18 +72,26 @@ BufferCanvas.prototype.clearRect = function(context,x,y,w,h)
 		h=h+y;
 		y=0;
 	}
+	if(x+w>this.width)
+	{
+		w-=(x+w-this.width);
+	}
+	if(y+h>this.height)
+	{
+		h-=(y+h-this.height);
+	}
 	if(h>0&&w>0)
 	{
 		context.drawImage(this.canvas,x,y,w,h,x,y,w,h);
 	}
-}
+};
 
 BufferCanvas.prototype.getWidth = function()
 {
 	return this.width;
-}
+};
 
 BufferCanvas.prototype.getHeight = function()
 {
 	return this.height;
-}
+};

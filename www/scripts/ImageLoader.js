@@ -28,7 +28,7 @@ function ImageLoader()
 		{
 			for(var i = 0;i<that.onCompleteHandlers.length;i++)that.onCompleteHandlers[i]();
 		}
-	}
+	};
 }
 
 ImageLoader.prototype.getImage = function(src)

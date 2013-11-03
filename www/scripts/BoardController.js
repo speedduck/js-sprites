@@ -32,7 +32,7 @@ BoardController.prototype.loadLevel = function(model)
 	this.hWalls = model.getHorizontalWalls();
 	this.vWalls = model.getVerticalWalls();
 	this.ghostSpawn = model.getGhostSpawn();
-}
+};
 
 BoardController.prototype.canTurn = function(x,y,direction)
 {
@@ -56,7 +56,7 @@ BoardController.prototype.canTurn = function(x,y,direction)
 		}
 	}
 	return result;
-}
+};
 
 BoardController.prototype.move = function(fromX,fromY,direction,distance)
 {
@@ -142,4 +142,4 @@ BoardController.prototype.move = function(fromX,fromY,direction,distance)
 		}
 	}
 	return result;
-}
+};
